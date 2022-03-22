@@ -1,9 +1,8 @@
 import React from 'react';
 import { render, screen } from '@testing-library/react';
-/* import userEvent from '@testing-library/user-event'; */
 import { MemoryRouter } from 'react-router-dom';
 import userEvent from '@testing-library/user-event';
-import renderWithRouter from '../services/renderWithRouter';
+import renderWithRouter from './renderWithRouter';
 import App from '../App';
 
 describe('Verifica se o topo da aplicação contém um conjunto fixo de links de navegação',
