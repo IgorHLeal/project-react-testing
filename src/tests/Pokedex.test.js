@@ -15,18 +15,15 @@ import pokemons from '../data';
   />);
 }; */
 
+/*  const pokemonNameTestId = 'pokemon-name'; */
 /* const pokemonTypeTestId = 'pokemon-type'; */
 
 describe('Testes do componente Pokedex', () => {
   // Ideia do reduce levantada na monitoria com o Gabriel;
-  const pokemonNameTestId = 'pokemon-name';
-
   const pokeFavorites = () => pokemons.reduce((acc, curr) => {
     acc[curr.id] = false;
     return acc;
   }, {});
-
-  console.log(pokeFavorites());
 
   it('Verifica se página contém um h2 com o texto Encountered pokémons', () => {
     renderWithRouter(<App />);
@@ -46,12 +43,14 @@ describe('Testes do componente Pokedex', () => {
     const btn = screen.getByRole('button', { name: /Próximo pokémon/i });
     expect(btn).toBeDefined();
 
-    const name = screen.getByTestId(pokemonNameTestId);
-
     pokemons.forEach((poke) => {
-      expect(name.innerText).toBe(poke);
+      screen.getByText(poke.name);
       userEvent.click(btn);
     });
+    // Resolução encontrada durante a monitoria do Gabriel;
+    // Recebi ajuda do Leandro Bonfim - Turma 19A para entender porque daria certo;
+    // Retorna para o primeiro pokemon após clicar no último
+    screen.getAllByText('Pikachu');
   });
 
   it('Verifica se é mostrado apenas um Pokémon por vez', () => {
