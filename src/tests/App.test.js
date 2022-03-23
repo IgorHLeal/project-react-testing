@@ -84,7 +84,6 @@ it('Redirecionar para a página de Pokémons Favoritos ao clicar no link Favorit
 it('Redireciona para a página Not Found ao entrar em uma URL desconhecida', () => {
   const { history } = renderWithRouter(<App />);
   history.push('/xablau');
-
   const notFound = screen.getByRole('heading',
     { name: /Page requested not found/i, level: 2 });
   expect(notFound).toBeDefined();
