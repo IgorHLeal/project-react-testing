@@ -64,13 +64,29 @@ describe('Testes do componente Pokedex', () => {
   });
 
   it('Verifica se a Pokédex tem os botões de filtro', () => {
-    // Deve existir um botão de filtragem para cada tipo de Pokémon, sem repetição.
-
-    // A partir da seleção de um botão de tipo, a Pokédex deve circular somente pelos pokémons daquele tipo;
-
-    // O texto do botão deve corresponder ao nome do tipo, ex. Psychic;
+    renderWithRouter(<Pokedex
+      isPokemonFavoriteById={ pokeFavorites() }
+      pokemons={ pokemons }
+    />);
+    // O new Set() serve para tirar valores repetidos de uma array
+    const pokemonsTypes = new Set(pokemons.map(({ type }) => type));
 
     // O botão All precisa estar sempre visível
+    const btnAll = screen.getByRole('button', { name: /all/i });
+    expect(btnAll).toBeDefined();
+
+    // Aqui o length não funcionou ao final da linha 81
+    const typeButtons = screen.getAllByTestId('pokemon-type-button');
+    expect(typeButtons).toHaveLength(pokemonsTypes.size);
+
+    const btnNext = screen.getByRole('button', { name: /Próximo pokémon/i });
+
+    const pokemonTypeTestId = screen.getByTestId('pokemon-type');
+
+    pokemonsTypes.forEach((type) => {
+      const buttonType = screen.getByRole('button', { name: type });
+      expect(buttonType).toBeDefined();
+    });
   });
 
   it('Verifica se a Pokédex contém um botão para resetar o filtro', () => {
@@ -81,3 +97,7 @@ describe('Testes do componente Pokedex', () => {
     // Ao carregar a página, o filtro selecionado deverá ser All;
   });
 });
+
+// ---------- REFERÊNCIAS ----------
+// new Set: https://vidafullstack.com.br/javascript/new-set-com-javascript/
+// toHaveLength: https://jest-bot.github.io/jest/docs/expect.html#tohavelengthnumber
