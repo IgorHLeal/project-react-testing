@@ -15,10 +15,19 @@ import pokemons from '../data';
   />);
 }; */
 
-const pokemonNameTestId = 'pokemon-name';
-const pokemonTypeTestId = 'pokemon-type';
+/* const pokemonTypeTestId = 'pokemon-type'; */
 
 describe('Testes do componente Pokedex', () => {
+  // Ideia do reduce levantada na monitoria com o Gabriel;
+  const pokemonNameTestId = 'pokemon-name';
+
+  const pokeFavorites = () => pokemons.reduce((acc, curr) => {
+    acc[curr.id] = false;
+    return acc;
+  }, {});
+
+  console.log(pokeFavorites());
+
   it('Verifica se página contém um h2 com o texto Encountered pokémons', () => {
     renderWithRouter(<App />);
     const headingPokedex = screen.getByRole('heading',
@@ -28,21 +37,21 @@ describe('Testes do componente Pokedex', () => {
   });
 
   it('Verifica se ao clicar no botão o próximo pokemon é exibido', () => {
-    renderWithRouter(<App />);
+    renderWithRouter(<Pokedex
+      isPokemonFavoriteById={ pokeFavorites() }
+      pokemons={ pokemons }
+    />);
 
     // O botão deve conter o texto Próximo pokémon
     const btn = screen.getByRole('button', { name: /Próximo pokémon/i });
     expect(btn).toBeDefined();
 
-    // Os próximos Pokémons da lista devem ser mostrados um a um
-    // O primeiro Pokémon da lista deve ser mostrado ao clicar no botão, se estiver no último Pokémon da lista;
-    // Usar o forEach para fazer a iteração
     const name = screen.getByTestId(pokemonNameTestId);
-    
 
     pokemons.forEach((poke) => {
-      expect()
-    })
+      expect(name.innerText).toBe(poke);
+      userEvent.click(btn);
+    });
   });
 
   it('Verifica se é mostrado apenas um Pokémon por vez', () => {
