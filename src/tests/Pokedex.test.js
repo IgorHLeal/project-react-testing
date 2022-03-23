@@ -54,7 +54,13 @@ describe('Testes do componente Pokedex', () => {
   });
 
   it('Verifica se é mostrado apenas um Pokémon por vez', () => {
+    renderWithRouter(<Pokedex
+      isPokemonFavoriteById={ pokeFavorites() }
+      pokemons={ pokemons }
+    />);
 
+    const pokemonNameTestId = screen.getAllByTestId('pokemon-name');
+    expect(pokemonNameTestId).toHaveLength(1);
   });
 
   it('Verifica se a Pokédex tem os botões de filtro', () => {
