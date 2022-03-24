@@ -71,7 +71,7 @@ describe('Testes do componente Pokedex', () => {
 
     // Acessar todos os botões
     const btnAll = screen.getByRole('button', { name: /All/i });
-    expect(btnAll.type).toBeDefined();
+    expect(btnAll).toBeDefined();
 
     const btnEletric = screen.getByRole('button', { name: /Electric/i });
     expect(btnEletric).toBeDefined();
@@ -101,6 +101,10 @@ describe('Testes do componente Pokedex', () => {
 
     const btnNextPokeTest = screen.getByRole('button', { name: /Próximo pokémonTeste/i });
     expect(btnNextPokeTest).toBeDefined();
+
+    const buttonTestId = screen.getAllByTestId(/pokemon-type-button/i);
+    const totalButtons = 7;
+    expect(buttonTestId).toHaveLength(totalButtons);
   });
 
   it('Verifica se a Pokédex contém um botão para resetar o filtro', () => {
@@ -110,6 +114,7 @@ describe('Testes do componente Pokedex', () => {
     />);
     // O texto do botão deve ser All;
     const btnAll = screen.getByRole('button', { name: /All/i });
+    userEvent.click(btnAll);
     expect(btnAll).toBeDefined();
 
     // A Pokedéx deverá mostrar os Pokémons normalmente (sem filtros) quando o botão All for clicado;
