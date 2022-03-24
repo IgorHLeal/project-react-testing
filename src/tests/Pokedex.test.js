@@ -59,7 +59,7 @@ describe('Testes do componente Pokedex', () => {
       pokemons={ pokemons }
     />);
 
-    const pokemonNameTestId = screen.getAllByTestId('pokemon-name');
+    const pokemonNameTestId = screen.getAllByTestId(/pokemon-name/i);
     expect(pokemonNameTestId).toHaveLength(1);
   });
 
@@ -68,36 +68,77 @@ describe('Testes do componente Pokedex', () => {
       isPokemonFavoriteById={ pokeFavorites() }
       pokemons={ pokemons }
     />);
-    // O new Set() serve para tirar valores repetidos de uma array
-    const pokemonsTypes = new Set(pokemons.map(({ type }) => type));
 
-    // O botão All precisa estar sempre visível
-    const btnAll = screen.getByRole('button', { name: /all/i });
-    expect(btnAll).toBeDefined();
+    // Acessar todos os botões
+    const btnAll = screen.getByRole('button', { name: /All/i });
+    expect(btnAll.type).toBeDefined();
 
-    // Aqui o length não funcionou ao final da linha 81
-    const typeButtons = screen.getAllByTestId('pokemon-type-button');
-    expect(typeButtons).toHaveLength(pokemonsTypes.size);
+    const btnEletric = screen.getByRole('button', { name: /Electric/i });
+    expect(btnEletric).toBeDefined();
 
-    const btnNext = screen.getByRole('button', { name: /Próximo pokémon/i });
+    const btnFire = screen.getByRole('button', { name: /Fire/i });
+    userEvent.click(btnFire);
+    const fireNext = screen.getByTestId(/pokemon-name/i);
+    const charm = screen.getByText(/charmander/i);
+    expect(fireNext).toBe(charm);
 
-    const pokemonTypeTestId = screen.getByTestId('pokemon-type');
+    expect(btnFire).toBeDefined();
 
-    pokemonsTypes.forEach((type) => {
-      const buttonType = screen.getByRole('button', { name: type });
-      expect(buttonType).toBeDefined();
-    });
+    const btnBug = screen.getByRole('button', { name: /Bug/i });
+    expect(btnBug).toBeDefined();
+
+    const btnPoison = screen.getByRole('button', { name: /Poison/i });
+    expect(btnPoison).toBeDefined();
+
+    const btnPsychic = screen.getByRole('button', { name: /Psychic/i });
+    expect(btnPsychic).toBeDefined();
+
+    const btnNormal = screen.getByRole('button', { name: /Normal/i });
+    expect(btnNormal).toBeDefined();
+
+    const btnDragon = screen.getByRole('button', { name: /Dragon/i });
+    expect(btnDragon).toBeDefined();
+
+    const btnNextPokeTest = screen.getByRole('button', { name: /Próximo pokémonTeste/i });
+    expect(btnNextPokeTest).toBeDefined();
   });
 
   it('Verifica se a Pokédex contém um botão para resetar o filtro', () => {
+    renderWithRouter(<Pokedex
+      isPokemonFavoriteById={ pokeFavorites() }
+      pokemons={ pokemons }
+    />);
     // O texto do botão deve ser All;
+    const btnAll = screen.getByRole('button', { name: /All/i });
+    expect(btnAll).toBeDefined();
 
     // A Pokedéx deverá mostrar os Pokémons normalmente (sem filtros) quando o botão All for clicado;
+    const btnNextPokeTest = screen.getByRole('button', { name: /Próximo pokémonTeste/i });
+    userEvent.click(btnNextPokeTest);
 
-    // Ao carregar a página, o filtro selecionado deverá ser All;
+    const fireNext = screen.getByTestId(/pokemon-name/i);
+    const charm = screen.getByText(/charmander/i);
+    expect(fireNext).toBe(charm);
   });
 });
 
 // ---------- REFERÊNCIAS ----------
 // new Set: https://vidafullstack.com.br/javascript/new-set-com-javascript/
 // toHaveLength: https://jest-bot.github.io/jest/docs/expect.html#tohavelengthnumber
+
+/*  // O new Set() serve para tirar valores repetidos de uma array
+    const pokemonsTypes = new Set(pokemons.map(({ type }) => type));
+
+// Aqui o length não funcionou ao final da linha 81
+  const typeButtons = screen.getAllByTestId('pokemon-type-button');
+  expect(typeButtons).toHaveLength(pokemonsTypes.size);
+
+  const btnNext = screen.getByRole('button', { name: /Próximo pokémon/i });
+
+  const pokemonTypeTestId = screen.getByTestId('pokemon-type');
+
+  pokemonsTypes.forEach((type) => {
+    const buttonType = screen.getByRole('button', { name: type });
+    expect(buttonType).toBeDefined();
+  });
+*/
