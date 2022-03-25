@@ -7,6 +7,8 @@ import App from '../App';
 describe('Teste o componente Pokemon', () => {
   it('Verifica se é renderizado um card com informações de determinado pokémon', () => {
     renderWithRouter(<App />);
+    // Acessar o data-testid pelo tipo de pokemon
+    // Tentando acessar pelo name nao funcionaou
     const pokemonType = screen.getByTestId('pokemon-type');
     expect(pokemonType).toHaveTextContent('Electric');
     expect(pokemonType).toBeDefined();
@@ -38,11 +40,30 @@ describe('Teste o componente Pokemon', () => {
       expect(headingDetails).toBeDefined();
     });
 
-  it('', () => {
-
+  it('Verifica se a URL exibida no navegador muda para /pokemon/<id>', () => {
+    /* Utilizando o history - que é declarado no arquivo renderWithRouter -
+    é possível acessar a sessão do histórico do navegador;
+    O location.pathname retorna a url exata em que estamos;
+    O BrowserRouter possui o history; */
+    const { history } = renderWithRouter(<App />);
+    const details = screen.getByRole('link', { name: /more details/i });
+    userEvent.click(details);
+    expect(history.location.pathname).toContain('pokemons');
   });
 
-  it('', () => {
+  it('Verifica se existe um ícone de estrela nos Pokémons favoritados', () => {
+    const { history } = renderWithRouter(<App />);
+    const details = screen.getByRole('link', { name: /more details/i });
+    userEvent.click(details);
+    expect(history.location.pathname).toContain('pokemons');
 
+    const favorite = screen.getByRole('checkbox');
+    userEvent.click(favorite);
+
+    const imgStar = screen.getByRole('img',
+      { name: /Pikachu is marked as favorite/i });
+    const url = 'http://localhost/star-icon.svg';
+    expect(imgStar.src).toBe(url);
+    expect(imgStar).toBeDefined();
   });
 });
