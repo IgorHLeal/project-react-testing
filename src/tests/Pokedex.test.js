@@ -6,18 +6,6 @@ import Pokedex from '../components/Pokedex';
 import App from '../App';
 import pokemons from '../data';
 
-/* const pokeFavorite = () => {
-  const isPokemonFavoriteById = pokemons.map(({ id }) => id);
-
-  renderWithRouter(<Pokedex
-    pokemons={ pokemons }
-    isPokemonFavoriteById={ isPokemonFavoriteById }
-  />);
-}; */
-
-/*  const pokemonNameTestId = 'pokemon-name'; */
-/* const pokemonTypeTestId = 'pokemon-type'; */
-
 describe('Testes do componente Pokedex', () => {
   // Ideia do reduce levantada na monitoria com o Gabriel;
   const pokeFavorites = () => pokemons.reduce((acc, curr) => {
@@ -70,19 +58,30 @@ describe('Testes do componente Pokedex', () => {
     />);
 
     // Acessar todos os botões
+    const btnNextPokeTest = screen.getByRole('button', { name: /Próximo pokémonTeste/i });
+    expect(btnNextPokeTest).toBeDefined();
+
     const btnAll = screen.getByRole('button', { name: /All/i });
     expect(btnAll).toBeDefined();
 
     const btnEletric = screen.getByRole('button', { name: /Electric/i });
     expect(btnEletric).toBeDefined();
 
+    // A partir da seleção de um botão de tipo, a Pokédex deve circular somente pelos pokémons daquele tipo;
     const btnFire = screen.getByRole('button', { name: /Fire/i });
     userEvent.click(btnFire);
     const fireNext = screen.getByTestId(/pokemon-name/i);
     const charm = screen.getByText(/charmander/i);
     expect(fireNext).toBe(charm);
-
     expect(btnFire).toBeDefined();
+
+    userEvent.click(btnNextPokeTest);
+
+    const rapidash = screen.getByRole('img', { name: 'Rapidash sprite' });
+    const urlRapidash = 'https://cdn2.bulbagarden.net/upload/5/58/Spr_5b_078.png';
+    expect(rapidash.src).toBe(urlRapidash);
+    expect(rapidash).toBeDefined();
+    // Final da verificação de pokemons do mesmo tipo
 
     const btnBug = screen.getByRole('button', { name: /Bug/i });
     expect(btnBug).toBeDefined();
@@ -98,9 +97,6 @@ describe('Testes do componente Pokedex', () => {
 
     const btnDragon = screen.getByRole('button', { name: /Dragon/i });
     expect(btnDragon).toBeDefined();
-
-    const btnNextPokeTest = screen.getByRole('button', { name: /Próximo pokémonTeste/i });
-    expect(btnNextPokeTest).toBeDefined();
 
     // Verifica se todos os typeButtons estão na tela
     const buttonTestId = screen.getAllByTestId(/pokemon-type-button/i);
