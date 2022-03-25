@@ -102,6 +102,7 @@ describe('Testes do componente Pokedex', () => {
     const btnNextPokeTest = screen.getByRole('button', { name: /Próximo pokémonTeste/i });
     expect(btnNextPokeTest).toBeDefined();
 
+    // Verifica se todos os typeButtons estão na tela
     const buttonTestId = screen.getAllByTestId(/pokemon-type-button/i);
     const totalButtons = 7;
     expect(buttonTestId).toHaveLength(totalButtons);
@@ -113,11 +114,12 @@ describe('Testes do componente Pokedex', () => {
       pokemons={ pokemons }
     />);
     // O texto do botão deve ser All;
+    // A Pokedéx deverá mostrar os Pokémons normalmente (sem filtros) quando o botão All for clicado;
     const btnAll = screen.getByRole('button', { name: /All/i });
     userEvent.click(btnAll);
     expect(btnAll).toBeDefined();
 
-    // A Pokedéx deverá mostrar os Pokémons normalmente (sem filtros) quando o botão All for clicado;
+    // Ao carregar a página, o filtro selecionado deverá ser All;
     const btnNextPokeTest = screen.getByRole('button', { name: /Próximo pokémonTeste/i });
     userEvent.click(btnNextPokeTest);
 
